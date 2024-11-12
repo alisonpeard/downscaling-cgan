@@ -4,6 +4,7 @@ from layers import ReflectionPadding2D, SymmetricPadding2D
 
 
 class Conv2DPadding(Layer):
+    """Conv2D layer with symmetric and reflect padding functionality."""
     def __init__(self, filters, kernel_size, stride, padding, dilations):
         super(Conv2DPadding, self).__init__()
         self.filters = filters
@@ -51,9 +52,9 @@ def residual_block(x, filters, conv_size=(3, 3), stride=1, dilations=1, relu_alp
     in_channels = int(x.shape[-1])
     x_in = x
 
-    if stride > 1:
+    if stride > 1: # reduce resolution
         x_in = AveragePooling2D(pool_size=(stride, stride))(x_in)
-    if force_1d_conv or (filters != in_channels):
+    if force_1d_conv or (filters != in_channels): # output has depth==filters
         x_in = Conv2D(filters=filters, kernel_size=(1, 1))(x_in)
 
     # first block of activation and 3x3 convolution (possibly strided, although we don't use this)
@@ -64,7 +65,7 @@ def residual_block(x, filters, conv_size=(3, 3), stride=1, dilations=1, relu_alp
     elif norm is None:
         pass
     else:
-        print("norm type not implemented")
+        print(f"norm type {norm} not implemented")
 
     # second block of activation and 3x3 unstrided convolution
     x = LeakyReLU(relu_alpha)(x)

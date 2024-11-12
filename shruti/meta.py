@@ -3,19 +3,20 @@ from tensorflow.keras import backend as K
 
 
 class Nontrainable(object):
-
+    """Creates a non-trainable environment for a model, use with 'with'."""
     def __init__(self, models):
-        if not isinstance(models, list):
-            models = [models]
+        models = ensure_list(models)
         self.models = models
 
     def __enter__(self):
+        """Set all models to nontrainable and keep record of original status."""
         self.trainable_status = [m.trainable for m in self.models]
         for m in self.models:
             m.trainable = False
         return self.models
 
     def __exit__(self, type, value, traceback):
+        """Return models to original trainable status."""
         for (m, t) in zip(self.models, self.trainable_status):
             m.trainable = t
 
@@ -64,6 +65,7 @@ def ensure_list(x):
 
 
 def input_shapes(model, prefix):
+    """Grab input shapes for each model (optionally filter by prefix)"""
     shapes = [il.shape[1:] for il in
               model.inputs if il.name.startswith(prefix)]
     shapes = [tuple([d for d in dims]) for dims in shapes]

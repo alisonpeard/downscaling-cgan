@@ -15,9 +15,9 @@ class GradientPenalty(Layer):
         super(GradientPenalty, self).__init__(**kwargs)
 
     def call(self, inputs):
-        target, wrt = inputs
+        target, wrt = inputs # [D(x), x]
         grad = _compute_gradients(target, [wrt])[0]
-        return K.sqrt(K.sum(K.batch_flatten(K.square(grad)), axis=1, keepdims=True))-1
+        return K.sqrt(K.sum(K.batch_flatten(K.square(grad)), axis=1, keepdims=True)) - 1
 
     def compute_output_shape(self, input_shapes):
         return (input_shapes[1][0], 1)

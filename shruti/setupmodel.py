@@ -11,7 +11,7 @@ from vaegantrain import VAE
 def setup_model(*,
                 mode=None,
                 arch=None,
-                downscaling_steps=None,
+                downscaling_steps=[1], # shruti's default
                 input_channels=None,
                 constant_fields=None,
                 filters_gen=None,
