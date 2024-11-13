@@ -36,6 +36,7 @@ def create_mixed_dataset(years,
 
     if weights is None:
         weights = [1./CLASSES]*CLASSES
+    # create a dataset for each class
     datasets = [create_dataset(years,
                                ii,
                                fcst_shape=fcst_shape,
@@ -45,6 +46,7 @@ def create_mixed_dataset(years,
                                shuffle_size=shuffle_size,
                                repeat=repeat)
                 for ii in range(CLASSES)]
+    # weighted sample from the datasets
     sampled_ds = tf.data.Dataset.sample_from_datasets(datasets,
                                                       weights=weights).batch(batch_size)
 

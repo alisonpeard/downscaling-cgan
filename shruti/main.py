@@ -132,18 +132,18 @@ if __name__ == "__main__":
         # a nice dictionary, or similar, with sensible default values
         model = setupmodel.setup_model(
             mode=mode,
-            arch=arch,
-            downscaling_steps=df_dict["steps"],
-            input_channels=input_channels,
-            constant_fields=constant_fields,
-            latent_variables=latent_variables,
+            arch=arch,                          # normal, forceconv, forceconv-long
+            downscaling_steps=df_dict["steps"], # [1]
+            input_channels=input_channels,      # 1, ...
+            constant_fields=constant_fields,    # 2
+            latent_variables=latent_variables,  # gen latent vars, 50
             filters_gen=filters_gen,
             filters_disc=filters_disc,
-            noise_channels=noise_channels,
+            noise_channels=noise_channels,      # 4
             padding=padding,
             lr_disc=lr_disc,
             lr_gen=lr_gen,
-            kl_weight=kl_weight,
+            kl_weight=kl_weight,                # get rid of this and all below --Alison
             ensemble_size=ensemble_size,
             CLtype=CLtype,
             content_loss_weight=content_loss_weight)

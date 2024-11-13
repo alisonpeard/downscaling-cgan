@@ -12,7 +12,7 @@ def generator(mode, # "GAN", deleted all the other options for now
               input_channels,
               constant_fields,
               filters_gen,
-              latent_variables=1,
+              latent_variables=1, # VAEGAN only
               noise_channels=4,
               conv_size=(3, 3),
               padding=None,

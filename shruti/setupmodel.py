@@ -16,7 +16,7 @@ def setup_model(*,
                 constant_fields=None,
                 filters_gen=None,
                 filters_disc=None,
-                noise_channels=None,
+                noise_channels=4,      # shruti's default
                 latent_variables=None,
                 padding=None,
                 kl_weight=None,

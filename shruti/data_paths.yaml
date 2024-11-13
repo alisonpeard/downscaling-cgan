@@ -1,3 +1,13 @@
+ALISON:
+    GENERAL:
+        TRUTH_PATH: ''                                            # I have no ground truth
+        FORECAST_PATH: '/mnt/ifs-icpac/IFS-regICPAC-meansd'       # condition
+        CONSTANTS_PATH: '/data/constants-regICPAC-meansd'         # constant fields
+
+    TFRecords:
+        tfrecords_path: '/mnt/ifs-icpac/tfrecords-regICPAC-meansd' # training?
+        
+        
 EWC:
     GENERAL:
         TRUTH_PATH: '/data/IMERG-regICPAC-6hr'
