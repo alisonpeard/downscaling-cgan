@@ -1,5 +1,5 @@
 # Notes
-## General features and questions
+## General questions
 1. Why do convolutional blocks have reflect/symmetric padding? Did this make a difference?
 2. Is there much difference between the `arch` options, e.g., `forceconv`, ...
 3. Why is the activation first in the residual blocks?
@@ -9,6 +9,16 @@
 7. Why are there multiple losses and how do they interact? There are three losses for the generator, two for the critic's real and fake labels (`wassertstein_loss`) and one for the gradient-penalty. It seems like instead of minimising the distance between $D(G(z))$ and $D(x)$, we specifically want them to approach $\{-1, 1\}$.
 10. Is `_parse_batch()` just a more complete implementation of `__str__`
 12. Why is garbage collection used?
+13. What format is original data in?
+
+
+## Data structures
+* Forecast fields: `['cape', 'cp', 'mcc', 'sp', 'ssr', 't2m', 'tciw', 'tclw', 'tcrw', 'tcw', 'tcwv', 'tp', 'u700', 'v700']`
+* Forecast data (condition): `FCST_PATH/<yearstr>/<field>.nc`
+* Constant fields: `CONSTANTS_PATH/elev.nc` (oro), `CONSTANTS_PATH/lsm.nc` (land-sea mask)
+* Truth data: `TRUTH_PATH/<date>_<hr>.nc4`
+* Forecast data is expected to have _mean and _sd fields, I will set sd=0
+* Can just use (I think) truth data with `autocoarsen` setting, not currently
 
 ## Discriminator features
 * Location: `models.py`
@@ -86,7 +96,9 @@
 
 
 ## Data handling / batching
-* `tfrecords_generator.py`:
+* If I use `autocoarsen` it will just automatically coarsen my dataset and use that for training
+* `gen_fcst_norm` generates and saves the image dataset stats to use in training
+* `tfrecords_generator.py`: subsamples full size images and saves as tfrecord datasets (for efficiency?)
     * Create a list of datasets for each class using `create_dataset()`
         * Loads files from `"<year>_*.<class>.tfrecords"`in TF Records dir
         * Builds a `TFRecordDataset` with `tf.data.AUTOTUNE`

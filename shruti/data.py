@@ -16,10 +16,10 @@ FCST_PATH = data_paths["GENERAL"]["FORECAST_PATH"]
 CONSTANTS_PATH = data_paths["GENERAL"]["CONSTANTS_PATH"]
 
 all_fcst_fields = ['cape', 'cp', 'mcc', 'sp', 'ssr', 't2m', 'tciw', 'tclw', 'tcrw', 'tcw', 'tcwv', 'tp', 'u700', 'v700']
-accumulated_fields = ['cp', 'ssr', 'tp']
+accumulated_fields = ['cp', 'ssr']#, 'tp']
 nonnegative_fields = ['cape', 'cp', 'mcc', 'sp', 'ssr', 't2m', 'tciw', 'tclw', 'tcrw', 'tcw', 'tcwv', 'tp']
 
-HOURS = 6  # 6-hr data
+HOURS = 1  # 6-hr data, IMDAA: 1-hr data
 
 
 # utility function; generator to iterate over a range of dates
@@ -119,7 +119,7 @@ def load_truth_and_mask(date,
     data_path = os.path.join(TRUTH_PATH, f"{fname}.nc4")
 
     ds = xr.open_dataset(data_path)
-    da = ds["precipitationCal"]
+    da = ds["tp_mean"]
     y = da.values
     ds.close()
 

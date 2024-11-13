@@ -1,11 +1,11 @@
 ALISON:
     GENERAL:
-        TRUTH_PATH: ''                                            # I have no ground truth
-        FORECAST_PATH: '/mnt/ifs-icpac/IFS-regICPAC-meansd'       # condition
-        CONSTANTS_PATH: '/data/constants-regICPAC-meansd'         # constant fields
+        TRUTH_PATH: '/Users/alison/Documents/DPhil/github/downscaling-cgan/alison-data/truth'
+        FORECAST_PATH: '/Users/alison/Documents/DPhil/github/downscaling-cgan/alison-data/forecast'
+        CONSTANTS_PATH: '/Users/alison/Documents/DPhil/github/downscaling-cgan/alison-data/constants' 
 
     TFRecords:
-        tfrecords_path: '/mnt/ifs-icpac/tfrecords-regICPAC-meansd' # training?
+        tfrecords_path: '/Users/alison/Documents/DPhil/github/downscaling-cgan/alison-data/constants/tfrecords'
         
         
 EWC:

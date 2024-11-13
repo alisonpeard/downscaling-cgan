@@ -1,4 +1,5 @@
 """ Data generator class for full-image evaluation of precipitation downscaling network """
+# %%
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.utils import Sequence
@@ -6,7 +7,7 @@ from tensorflow.keras.utils import Sequence
 from data import load_fcst_truth_batch, load_hires_constants, HOURS
 import read_config
 
-
+# %%
 class DataGenerator(Sequence):
     '''
     Data generator class that returns (forecast, constants, mask, truth) data. Class will return forecast data at the start and end of each interval (for non-accumulated fields) and accumulated fields over the interval.  The truth data is averaged over the interval.
@@ -43,7 +44,7 @@ class DataGenerator(Sequence):
         assert start_hour % HOURS == 0
         assert end_hour % HOURS == 0
         assert end_hour > start_hour
-        assert autocoarsen is False  # untested, probably not useful in this project
+        # assert autocoarsen is False  # untested, probably not useful in this project
 
         self.fcst_fields = fcst_fields
         self.batch_size = batch_size
@@ -127,7 +128,51 @@ class DataGenerator(Sequence):
     def on_epoch_end(self):
         if self.shuffle:
             self.shuffle_data()
-
+# %%
 
 if __name__ == "__main__":
-    pass
+    if True:
+        # test output looks right
+        datagen = DataGenerator(['20210101'],
+                                 ['tp'],
+                                 start_hour=1,
+                                 end_hour=168,
+                                 batch_size=1,
+                                 log_precip=True,
+                                 shuffle=True,
+                                 constants=True,
+                                 fcst_norm=True,
+                                 autocoarsen=False,
+                                 seed=42)
+        
+
+        print('len(datagen):', len(datagen))
+        print('lo res inputs:', datagen[0][0]['lo_res_inputs'].shape)
+        print('hi res inputs:', datagen[0][0]['hi_res_inputs'].shape)
+
+        print('output:', datagen[0][1]['output'].shape)
+        print('mask:', datagen[0][1]['mask'].shape)
+
+
+        time = 6
+        import matplotlib.pyplot as plt
+        fig, axs = plt.subplots(2, 4, figsize=(10, 4))
+        for ii in range(4):
+            ax = axs[0, ii]
+            ax.imshow(datagen[time][0]['lo_res_inputs'][0, ..., ii])
+            ax.set_title(f'lores_{ii}')
+        for ii in range(2):
+            ax = axs[1, ii]
+            ax.imshow(datagen[time][0]['hi_res_inputs'][0, ..., ii])
+            ax.set_title(f'hires_{ii}')
+        axs[1, 2].imshow(datagen[time][1]['mask'][0, ...])
+        axs[1, 3].imshow(datagen[time][1]['output'][0, ...])
+        axs[1, 2].set_title('land')
+        axs[1, 3].set_title('output')
+        for ax in axs.ravel():
+            ax.axis('off')
+            ax.invert_yaxis()
+    else:
+        pass
+
+# %%
